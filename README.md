@@ -108,9 +108,9 @@ Send a call https://api.cexdirect.com/api/v1/merchant/precisions/{placementId}
 
 - To calculate rate, you should know use input value from user and insert it to the following formulas using values **a,b,c** from step 1:
 
-`For crypto, use - a * value(from user) - b / a`
+To calculate an amount of crypto use `(a * fiat - b) / c`
 
-`For fiat, use - c * value(from user) + b / a`
+To calculate an amount of fiat use `(crypto * c + b) / a`
 
 - Round the result using data from step 2:
 
@@ -134,13 +134,15 @@ src="https://api.cexdirect.com/?placementId=8e29e9b1-f3d0-4dd4-9920-08773ebcf0fa
 ></iframe>
 ```
 
-- Parameters description:
+### Parameters description:
 
 `allow="geolocation"` - this flag is optional and it gives an access for geolocation of user;
 
 `height and width` - you can control widget size on your page;
 
-`src` - url of iframe with important params:
+`src` - url of iframe with important params.
+
+- Such as:
 
 `placementId` - this is a required parameter, without it your page won't load;
 
