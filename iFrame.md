@@ -18,11 +18,11 @@ This will allow you to track performance.
 - `placementSecret` - used for order tracking purpose.
 - `clientOrderID` - a unique GUID that you can assign to an order originating on your side. Also used for tracking an order.
 
-*Note, `placementID` with agreed preset parameters (i.e. fees, currencies) will be provided to you once agreement is signed.*
+*Note, `placementID` with agreed preset parameters (i.e. fees, currencies) will be configured for you once agreement is signed.*
 
 *Meanwhile, you may use our sample `placementID` for testing* - 8e29e9b1-f3d0-4dd4-9920-08773ebcf0fa
 
-## Testing a calculator
+### Testing a calculator
 
 Steps to do it:
 1) Get available coins and rates;
@@ -32,7 +32,10 @@ Steps to do it:
 Now we will go through the process step by step.
 
 ### 1. Getting the coins and rates.
-Send a call - https://api.cexdirect.com/api/v1/payments/currencies/{placementId} 
+Send a call:
+```
+https://api.cexdirect.com/api/v1/payments/currencies/{placementId} 
+```
 
 You will receive array of currency pairs :
 
@@ -72,7 +75,11 @@ You will receive array of currency pairs :
 
 Use precisions to correctly round calculation and set min and max values.
 
-Send a call https://api.cexdirect.com/api/v1/merchant/precisions/{placementId} 
+Send a call:
+```
+https://api.cexdirect.com/api/v1/merchant/precisions/{placementId} 
+```
+
 ```
 [
   {
@@ -126,7 +133,9 @@ To calculate an amount of fiat use `(crypto * c + b) / a`
 
 *`dynamic` - the number of zeros entered by user is displayed.*
 
-- To invoke the flow on your page you should add this snippet:
+### Embedding the IFrame
+
+To embed the IFrame on your page you should follow this example:
 
 ```
 <iframe allow="geolocation" frameborder="0" height="450px" width="600px"
@@ -134,7 +143,7 @@ src="https://api.cexdirect.com/?placementId=8e29e9b1-f3d0-4dd4-9920-08773ebcf0fa
 ></iframe>
 ```
 
-### Parameters description:
+### Parameters description (IFrame):
 
 `allow="geolocation"` - this flag is optional and it gives an access for geolocation of user;
 
@@ -142,9 +151,7 @@ src="https://api.cexdirect.com/?placementId=8e29e9b1-f3d0-4dd4-9920-08773ebcf0fa
 
 `src` - url of iframe with important params.
 
-- Such as:
-
-`placementId` - this is a required parameter, without it your page won't load;
+`placementId` - your configuration of the widget, without it a page won't load;
 
 `calculatorValues` - this is optional parameter, it decides which step to show first. 
 
@@ -161,6 +168,8 @@ src="https://api.cexdirect.com/?placementId=8e29e9b1-f3d0-4dd4-9920-08773ebcf0fa
 `wallet` - optional crypto address. If nothing is passed, client will be able to enter it later.
 Note, for some `placementId`s this parameter will be locked.
 
+`merchantUri` - a link that defines where the "Return to" button at the end of the flow will direct a user.
+
 `clientOrderId` - optional unique GUID, to get order status (if such 'clientOrderId' already exists, flow will be crashed).
 
 **This will start an order flow for user in the IFrame.**
@@ -168,6 +177,15 @@ Note, for some `placementId`s this parameter will be locked.
 *Note, if you don't pass `calculatorValues` to the IFrame or `calculatorValues` data is invalid , widget will load its own calculator. 
 
 If `calculatorValues` is valid, widget will move users to step of filling email and country.
+
+### Redirecting a flow to cexdirect.com
+
+If you are willing to redirect your customers to cexdirect.com instead of setting up the IFrame on your side you should use a following link:
+
+``` 
+https://cexdirect.com/buy?placementId=
+```
+You may add all the above listed parameters: `calculatorValues` , `wallet` , `merchantUri` , `clientOrderId`
 
 
 ## Tracking orders (optional)
@@ -262,7 +280,7 @@ const res =
 
 `"crypto-sent"` - Appears on a transaction cheque with Transaction ID;
 
-`"settled"` - Revenue shares are settled and sent;
+`"settled"` - order has been completed;
 
 `"crashed"` - following statuses, manual check is needed.
 - Refund Failed; 
