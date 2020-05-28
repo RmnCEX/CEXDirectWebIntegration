@@ -79,6 +79,7 @@ Send a call:
 ```
 https://api.cexdirect.com/api/v1/merchant/precisions/{placementId} 
 ```
+You will receive:
 
 ```
 [
