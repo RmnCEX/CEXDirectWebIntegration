@@ -251,39 +251,40 @@ const res =
 
 ## Possible status values
 
-`"new"` - Appears once an order is created (after Email/Country are filled in);
+`"new"` - Order is created, Email/Country are filled in;
 
-`"verification-ready"` - Appears after a user clicks Next on Verification step;
+`"new-returned"` - Order is created, user who previously used our service is asked to verify it with email confirmation;
 
-`"verification-in-progress"` - Shown for a brief perid when verification is in progress. Transition status; 
+`"email-returned"` - Order is created, user who previously used our service has confirmed his email;
+
+`"verification-ready"` - User clicks Next on Verification step;
+
+`"verification-in-progress"` - Shown for a brief period when verification is in progress. Transition status; 
 
 `"verification-rejected"` - User's verification has been rejected;
 
 `"verification-failed"` - Verification services are down/not responding;
 
-`"processing-acknowledge"` - User has been requested additional data (basic ID info);
+`"processing-acknowledge"` - User has been requested to provide additional data (basic ID info such as name, surname);
 
-`"processing-ready"` - Appears after additional data is filled and sent;
+`"processing-ready"` - Additional data is filled and sent;
 
 `"processing-3ds"` - Payment 3DS screen;
 
 `"processing-rejected"` - Payment has been rejected by service provider;
 
-`"processing-failed"` - Processing service is down/not responding;
+`"processing-failed"` - Payment has failed on the banking side;
 
-`"refund-in-progress"` - Transition status of an order after being failed in processing, only in case a user has been charged;
+`"refund-in-progress"` - Transition status of an order being failed in processing, only in case a card has been charged;
 
-`"refunded"` - Appears when refund is successfully done;
+`"refunded"` - Refund is done;
 
-`"email-confirmation"` - Appears during email confirmation stage; 
+`"email-confirmation"` - Email confirmation stage; 
 
-`"crypto-sending"` -  Appears on a transaction cheque with a loading Transaction ID;
+`"crypto-sending"` -  Transaction cheque with a loading Transaction ID;
 
-`"crypto-sent"` - Appears on a transaction cheque with Transaction ID;
+`"crypto-sent"` - Transaction cheque with Transaction ID;
 
 `"settled"` - order has been completed;
 
-`"crashed"` - following statuses, manual check is needed.
-- Refund Failed; 
-- Settlement Failed;
-- Exchange Rate is changed more than allowed percent.
+`"crashed"` - manual check is needed (refund failed, settlement failed, rate has changed exceeding allowed percentage).
