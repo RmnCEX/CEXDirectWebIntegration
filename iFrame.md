@@ -192,8 +192,9 @@ You may add all the above listed parameters: `calculatorValues` , `wallet` , `me
 ## Tracking orders (optional)
 
 If you want to track an order within your system you may use the following instructions.
+**Note, to track an order you have to pass `clientOrderId` for each order generated on your side.**
 
-- Firstly, here is a testing `placementID` and secret.
+- Firstly, you would need your `placementID` and secret. As example:
 
 ```
 // placementId =  "8e29e9b1-f3d0-4dd4-9920-08773ebcf0fa"
@@ -202,16 +203,16 @@ const crypto = require('crypto');
 const nonce = new Date().getTime();
 ```
 
-- Generate a signature.
+- Then, you'll need to Generate a signature.
 ```
-function generateSignature(params) 
+function generateSignature([placementId, placementSecret, nonce.toString()]) 
   { 
     const hash = crypto.createHash("sha512"); 
     params.forEach(value => hash.update(value)); 
     return hash.digest("hex").toUpperCase();
   }
 ```
-- Run a request.
+- Run a POST request.
 ```
 {
 const signature = generateSignature([placementId, placementSecret, nonce.toString()]);
@@ -231,7 +232,7 @@ const signature = generateSignature([placementId, placementSecret, nonce.toStrin
       }
 }
 ```
-- Successful response example.
+- Here's how successful response looks like.
 ```
 const res = 
 {
