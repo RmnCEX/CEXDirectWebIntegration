@@ -1,7 +1,7 @@
-## CEX Direct web (IFrame) integration guide
+## CEX Direct integration guide
 ### Overview
-This guide will help you set up [CEX Direct](https://cexdirect.com/buy) crypto buy solution via IFrame on your side.
-The IFrame can be customized with a *CSS* file to match your website's theme.
+This guide will help you set up CEX Direct crypto buy solution via IFrame or redirect on your side.
+We allow customisation with a *CSS* file to match your website's theme.
 
 ### Getting started
 To start the flow you will need to build the *calculator* on your side and then launch the IFrame with users' *values*.
@@ -134,7 +134,7 @@ To calculate an amount of fiat use `(crypto * c + b) / a`
 
 *`dynamic` - the number of zeros entered by user is displayed.*
 
-### Embedding the IFrame
+## Embedding the IFrame
 
 To embed the IFrame on your page you should follow this example:
 
@@ -144,7 +144,7 @@ src="https://api.cexdirect.com/?placementId=8e29e9b1-f3d0-4dd4-9920-08773ebcf0fa
 ></iframe>
 ```
 
-### Parameters description (IFrame):
+## Parameters description:
 
 `allow="geolocation"` - this flag is optional and it gives an access for geolocation of user;
 
@@ -166,12 +166,17 @@ src="https://api.cexdirect.com/?placementId=8e29e9b1-f3d0-4dd4-9920-08773ebcf0fa
 
 `cryptoValue` - crypto amount;
 
-`wallet` - optional crypto address. If nothing is passed, client will be able to enter it later.
-Note, for some `placementId`s this parameter will be locked.
+`wallet` - user's crypto address. Optional. If nothing is passed, a client will be able to enter it later.
 
 `merchantUri` - a link that defines where the "Return to" button at the end of the flow will direct a user.
 
-`clientOrderId` - optional unique GUID, to get order status (if such 'clientOrderId' already exists, flow will be crashed).
+`useremail` - user's email address. Optional. If nothing is passed, a client will be able to enter it later.
+
+`country` - user's country. Optional. If nothing is passed, a client will be able to choose it later.
+
+`state` - user's state, only in case `country` is US. Optional. If nothing is passed, a client will be able to choose it later.
+
+`clientOrderId` - optional unique GUID, passed to be able to get an order status (if such 'clientOrderId' already exists, flow will be crashed).
 
 **This will start an order flow for user in the IFrame.**
 
@@ -179,15 +184,57 @@ Note, for some `placementId`s this parameter will be locked.
 
 If `calculatorValues` is valid, widget will move users to step of filling email and country.
 
-### Redirecting a flow to cexdirect.com
+## Redirecting a flow to cexdirect.com
 
 If you are willing to redirect your customers to cexdirect.com instead of setting up the IFrame on your side you should use a following link:
 
 ``` 
 https://cexdirect.com/buy?placementId=
 ```
-You may add all the above listed parameters: `calculatorValues` , `wallet` , `merchantUri` , `clientOrderId`
+You may add all the above listed parameters: `calculatorValues` , `wallet` , `merchantUri` , `clientOrderId`, `useremail` , `country` , `state`
 
+## Getting a list of supported countries and US states.
+
+Request Method: `GET`
+
+Request URL: https://api.cexdirect.com/api/v1/payments/countries
+
+## Link encryption
+
+IFrame or redirect link can be encrypted using the following guidelines:
+
+**Header**
+
+```
+{
+  "alg": "RS256",
+  "typ": "JWT"
+}
+
+```
+**Payload example**
+```
+{
+  "calculatorValues": {
+    "fiatValue": "120.55",
+    "fiatCurrency": "USD",
+    "cryptoValue": "0.4000034",
+    "cryptoCurrency": "BTC"
+  },
+  "placementId": "77777777-7777-7777-7777-777777777777",
+  "wallet": "wallet",
+  "clientOrderId": "clientOrderId",
+  "merchantUri": "https://website.com",
+  "userEmail": "test@test.com",
+  "country": "US",
+  "state": "CA"
+}
+```
+**Signature**
+```
+RS256(secret, base64urlEncoding(header) + '.' + base64urlEncoding(payload))
+```
+Secret will be provided upon the request.
 
 ## Tracking orders (optional)
 
