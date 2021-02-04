@@ -197,7 +197,7 @@ You may add all the above listed parameters: `calculatorValues` , `wallet` , `me
 
 Request Method: `GET`
 
-Request URL: https://api.cexdirect.com/api/v1/payments/countries
+Request URL: https://api.cexdirect.com/api/v1/payments/countries/placementId
 
 ## Link encryption
 
